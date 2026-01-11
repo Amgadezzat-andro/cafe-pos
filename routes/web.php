@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Product CRUD routes
     Route::resource('products', ProductController::class);
+
+    // Order management and reports
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/reports/financial', [OrderController::class, 'reports'])->name('orders.reports');
 });
 
 // Cashier routes - only accessible by cashier role
