@@ -28,7 +28,7 @@
 
             @if ($products->count())
                 <div class="overflow-x-auto bg-white rounded-lg shadow">
-                    <table class="min-w-full">
+                    <table class="w-full">
                         <thead class="bg-gray-100 border-b">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">ID</th>
