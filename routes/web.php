@@ -12,10 +12,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    // If user is admin, show admin dashboard with financial summary
+    // Dashboard - show different summary based on user role
     $user = auth()->guard('web')->user();
     
     if ($user && $user->hasRole('admin')) {
+        // Admin dashboard with financial summary
         $today = \Carbon\Carbon::now();
         $startOfMonth = $today->copy()->startOfMonth();
         
@@ -44,6 +45,41 @@ Route::get('/dashboard', function () {
             ->get();
         
         return view('dashboard', compact('todayOrders', 'todayRevenue', 'monthOrders', 'monthRevenue', 'topProducts', 'paymentMethodReport'));
+    }
+    
+    if ($user && $user->hasRole('cashier')) {
+        // Cashier dashboard with their order summary
+        $today = \Carbon\Carbon::now();
+        $startOfMonth = $today->copy()->startOfMonth();
+        
+        // Cashier's today's summary
+        $todayOrders = \App\Models\Order::where('user_id', $user->id)
+            ->whereDate('created_at', $today)
+            ->count();
+        $todayRevenue = \App\Models\Order::where('user_id', $user->id)
+            ->whereDate('created_at', $today)
+            ->sum('total');
+        
+        // Cashier's this month summary
+        $monthOrders = \App\Models\Order::where('user_id', $user->id)
+            ->whereBetween('created_at', [$startOfMonth, $today])
+            ->count();
+        $monthRevenue = \App\Models\Order::where('user_id', $user->id)
+            ->whereBetween('created_at', [$startOfMonth, $today])
+            ->sum('total');
+        
+        // Cashier's top products this month
+        $topProducts = \Illuminate\Support\Facades\DB::table('order_items')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->selectRaw('order_items.product_name, SUM(order_items.quantity) as total_quantity, SUM(order_items.total) as total_revenue')
+            ->where('orders.user_id', $user->id)
+            ->whereBetween('orders.created_at', [$startOfMonth, $today])
+            ->groupBy('order_items.product_name')
+            ->orderByDesc('total_quantity')
+            ->limit(5)
+            ->get();
+        
+        return view('dashboard', compact('todayOrders', 'todayRevenue', 'monthOrders', 'monthRevenue', 'topProducts'));
     }
     
     return view('dashboard');
@@ -79,6 +115,11 @@ Route::middleware(['auth', 'role:cashier'])->group(function () {
     Route::get('/pos/checkout', [CartController::class, 'checkout'])->name('pos.checkout');
     Route::post('/pos/complete-checkout', [CartController::class, 'completeCheckout'])->name('pos.complete-checkout');
     Route::get('/order/{order}/receipt', [CartController::class, 'receipt'])->name('order.receipt');
+    
+    // Cashier order management
+    Route::get('/my-orders', [OrderController::class, 'cashierOrders'])->name('cashier.orders');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('order.cancel');
+    Route::post('/orders/{order}/refund', [OrderController::class, 'refund'])->name('order.refund');
 });
 
 require __DIR__.'/auth.php';

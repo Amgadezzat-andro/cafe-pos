@@ -20,6 +20,10 @@ class Order extends Model
         'total',
         'payment_method',
         'status',
+        'refunded_amount',
+        'refund_reason',
+        'cancelled_at',
+        'refunded_at',
     ];
 
     /**
@@ -31,6 +35,9 @@ class Order extends Model
         'subtotal' => 'decimal:2',
         'tax' => 'decimal:2',
         'total' => 'decimal:2',
+        'refunded_amount' => 'decimal:2',
+        'cancelled_at' => 'datetime',
+        'refunded_at' => 'datetime',
     ];
 
     /**

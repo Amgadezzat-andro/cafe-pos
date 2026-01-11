@@ -6,6 +6,7 @@ use App\Models\Order;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 
+use Illuminate\Http\RedirectResponse;
 class OrderController extends Controller
 {
     /**
@@ -116,5 +117,70 @@ class OrderController extends Controller
             'topProducts',
             'dailyRevenue'
         ));
+    }
+
+
+    /**
+     * Cancel an order.
+     */
+    public function cancel(Order $order): \Illuminate\Http\RedirectResponse
+    {
+        if ($order->status === 'cancelled') {
+            return redirect()->back()
+                ->with('error', 'This order is already cancelled.');
+        }
+
+        $order->update([
+            'status' => 'cancelled',
+            'cancelled_at' => now(),
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Order cancelled successfully.');
+    }
+
+    /**
+     * Refund an order.
+     */
+    public function refund(Request $request, Order $order): RedirectResponse
+    {
+        $request->validate([
+            'refund_reason' => 'required|string|max:255',
+        ]);
+
+        if ($order->status === 'cancelled' && $order->refunded_amount > 0) {
+            return redirect()->back()
+                ->with('error', 'This order has already been refunded.');
+        }
+
+        $refundAmount = $order->total - $order->refunded_amount;
+
+        $order->update([
+            'status' => 'cancelled',
+            'refunded_amount' => $order->refunded_amount + $refundAmount,
+            'refund_reason' => $request->refund_reason,
+            'refunded_at' => now(),
+            'cancelled_at' => now(),
+        ]);
+
+        return redirect()->back()
+            ->with('success', "Order refunded successfully! Amount: \${$refundAmount}");
+    }
+
+    /**
+     * Display cashier's orders.
+     */
+    public function cashierOrders(Request $request): View
+    {
+        $query = Order::where('user_id', auth()->id())->with('items');
+
+        // Filter by status
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        return view('cashier.orders', compact('orders'));
     }
 }

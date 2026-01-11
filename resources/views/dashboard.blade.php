@@ -10,6 +10,7 @@
             @php
                 $user = auth()->user();
                 $isAdmin = $user && $user->role?->value === 'admin';
+                $isCashier = $user && $user->role?->value === 'cashier';
             @endphp
 
             @if ($isAdmin)
@@ -114,6 +115,74 @@
                         Financial Reports
                     </a>
                 </div>
+            @elseif ($isCashier)
+                <!-- Cashier Dashboard with Personal Order Summary -->
+
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold mb-4">Your Performance Today</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Orders Today</p>
+                            <p class="text-4xl font-bold text-blue-600">{{ $todayOrders ?? 0 }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Revenue Today</p>
+                            <p class="text-4xl font-bold text-green-600">${{ number_format($todayRevenue ?? 0, 2) }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold mb-4">This Month's Performance</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Orders This Month</p>
+                            <p class="text-4xl font-bold text-blue-600">{{ $monthOrders ?? 0 }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Revenue This Month</p>
+                            <p class="text-4xl font-bold text-green-600">${{ number_format($monthRevenue ?? 0, 2) }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold">Your Top Products (This Month)</h3>
+                            <a href="{{ route('cashier.orders') }}" class="text-blue-600 hover:text-blue-900 text-sm">View All Orders</a>
+                        </div>
+
+                        @if (isset($topProducts) && $topProducts->count())
+                            <div class="space-y-3">
+                                @foreach ($topProducts as $product)
+                                    <div class="flex justify-between items-center pb-3 border-b">
+                                        <div>
+                                            <p class="font-semibold">{{ $product->product_name }}</p>
+                                            <p class="text-sm text-gray-600">{{ $product->total_quantity }} units sold</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="font-bold text-green-600">${{ number_format($product->total_revenue, 2) }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-gray-500">No sales data available.</p>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Quick Links for Cashier -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="{{ route('pos.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded text-center">
+                        Start POS
+                    </a>
+                    <a href="{{ route('cashier.orders') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded text-center">
+                        View My Orders
+                    </a>
+                </div>
+
             @else
                 <!-- Regular User Dashboard -->
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
