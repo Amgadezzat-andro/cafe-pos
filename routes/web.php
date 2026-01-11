@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,19 +21,11 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes - only accessible by admin role
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/products', function () {
-        return view('products.index');
-    })->name('products.index');
+    // Category CRUD routes
+    Route::resource('categories', CategoryController::class);
 
-    Route::prefix('products')->name('products.')->group(function () {
-        Route::get('/create', function () {
-            return view('products.create');
-        })->name('create');
-
-        Route::get('/{id}', function ($id) {
-            return view('products.show', compact('id'));
-        })->name('show');
-    });
+    // Product CRUD routes
+    Route::resource('products', ProductController::class);
 });
 
 // Cashier routes - only accessible by cashier role
