@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -145,15 +147,46 @@ class CartController extends Controller
                 ->with('error', 'Cart is empty!');
         }
 
-        // Here you would typically create an Order record in the database
-        // For now, we'll just clear the cart and show a success message
-        
-        $total = $this->calculateTotal($cart);
-        
+        // Calculate totals
+        $subtotal = $this->calculateTotal($cart);
+        $tax = $subtotal * 0.05; // 5% tax
+        $total = $subtotal + $tax;
+
+        // Create order
+        $order = Order::create([
+            'user_id' => auth()->user()->id,
+            'subtotal' => $subtotal,
+            'tax' => $tax,
+            'total' => $total,
+            'payment_method' => $request->payment_method,
+            'status' => 'completed',
+        ]);
+
+        // Create order items
+        foreach ($cart as $item) {
+            OrderItem::create([
+                'order_id' => $order->id,
+                'product_id' => $item['id'],
+                'product_name' => $item['name'],
+                'price' => $item['price'],
+                'quantity' => $item['quantity'],
+                'total' => $item['price'] * $item['quantity'],
+            ]);
+        }
+
+        // Clear cart
         session()->forget('cart');
 
-        return redirect()->route('pos.index')
-            ->with('success', "Order completed! Total: \${$total}");
+        return redirect()->route('order.receipt', $order->id)
+            ->with('success', 'Order completed successfully!');
+    }
+
+    /**
+     * Display order receipt.
+     */
+    public function receipt(Order $order): View
+    {
+        return view('pos.receipt', compact('order'));
     }
 
     /**

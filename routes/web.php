@@ -38,6 +38,7 @@ Route::middleware(['auth', 'role:cashier'])->group(function () {
     Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
     Route::get('/pos/checkout', [CartController::class, 'checkout'])->name('pos.checkout');
     Route::post('/pos/complete-checkout', [CartController::class, 'completeCheckout'])->name('pos.complete-checkout');
+    Route::get('/order/{order}/receipt', [CartController::class, 'receipt'])->name('order.receipt');
 });
 
 require __DIR__.'/auth.php';
