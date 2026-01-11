@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,19 +31,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Cashier routes - only accessible by cashier role
 Route::middleware(['auth', 'role:cashier'])->group(function () {
-    Route::get('/pos', function () {
-        return view('pos.index');
-    })->name('pos.index');
-
-    Route::prefix('pos')->name('pos.')->group(function () {
-        Route::get('/checkout', function () {
-            return view('pos.checkout');
-        })->name('checkout');
-
-        Route::get('/receipt/{id}', function ($id) {
-            return view('pos.receipt', compact('id'));
-        })->name('receipt');
-    });
+    Route::get('/pos', [CartController::class, 'index'])->name('pos.index');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::patch('/cart/update/{productId}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::get('/pos/checkout', [CartController::class, 'checkout'])->name('pos.checkout');
+    Route::post('/pos/complete-checkout', [CartController::class, 'completeCheckout'])->name('pos.complete-checkout');
 });
 
 require __DIR__.'/auth.php';
