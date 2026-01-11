@@ -12,6 +12,40 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    // If user is admin, show admin dashboard with financial summary
+    $user = auth()->guard('web')->user();
+    
+    if ($user && $user->hasRole('admin')) {
+        $today = \Carbon\Carbon::now();
+        $startOfMonth = $today->copy()->startOfMonth();
+        
+        // Today's summary
+        $todayOrders = \App\Models\Order::whereDate('created_at', $today)->count();
+        $todayRevenue = \App\Models\Order::whereDate('created_at', $today)->sum('total');
+        
+        // This month's summary
+        $monthOrders = \App\Models\Order::whereBetween('created_at', [$startOfMonth, $today])->count();
+        $monthRevenue = \App\Models\Order::whereBetween('created_at', [$startOfMonth, $today])->sum('total');
+        
+        // Top products this month
+        $topProducts = \Illuminate\Support\Facades\DB::table('order_items')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->selectRaw('order_items.product_name, SUM(order_items.quantity) as total_quantity, SUM(order_items.total) as total_revenue')
+            ->whereBetween('orders.created_at', [$startOfMonth, $today])
+            ->groupBy('order_items.product_name')
+            ->orderByDesc('total_quantity')
+            ->limit(5)
+            ->get();
+        
+        // Revenue by payment method (this month)
+        $paymentMethodReport = \App\Models\Order::whereBetween('created_at', [$startOfMonth, $today])
+            ->selectRaw('payment_method, COUNT(*) as count, SUM(total) as total')
+            ->groupBy('payment_method')
+            ->get();
+        
+        return view('dashboard', compact('todayOrders', 'todayRevenue', 'monthOrders', 'monthRevenue', 'topProducts', 'paymentMethodReport'));
+    }
+    
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
