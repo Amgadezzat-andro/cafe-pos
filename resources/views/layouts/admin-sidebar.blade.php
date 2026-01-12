@@ -69,6 +69,16 @@
             </div>
         </a>
 
+        <!-- Employees -->
+        <a href="{{ route('employees.index') }}" class="block px-4 py-2 rounded-lg transition @if(request()->routeIs('employees.*')) bg-blue-600 @else hover:bg-gray-800 @endif">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.856-1.487M15 10a3 3 0 11-6 0 3 3 0 016 0zM16 16a5 5 0 010 10H4a5 5 0 010-10h12z"></path>
+                </svg>
+                <span>Employees</span>
+            </div>
+        </a>
+
         <!-- Divider -->
         <div class="my-2 border-t border-gray-700"></div>
 

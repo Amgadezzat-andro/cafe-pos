@@ -138,6 +138,25 @@
                     </div>
                 </div>
 
+                <!-- Employees Section -->
+                <div class="mt-6">
+                    <h3 class="text-2xl font-bold mb-4">Employees Overview</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Total Employees</p>
+                            <p class="text-3xl font-bold text-blue-600">{{ \App\Models\Employee::count() }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Total Payroll</p>
+                            <p class="text-3xl font-bold text-green-600">${{ number_format(\App\Models\Employee::totalPayroll(), 2) }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Average Salary</p>
+                            <p class="text-3xl font-bold text-purple-600">${{ number_format(\App\Models\Employee::avgSalary(), 2) }}</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Quick Links -->
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <a href="{{ route('categories.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded text-center">
@@ -158,12 +177,15 @@
                     <a href="{{ route('purchases.index') }}" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-6 rounded text-center">
                         Record Purchases
                     </a>
-                    <a href="{{ route('expenses.index') }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded text-center">
-                        Manage Expenses
+                    <a href="{{ route('employees.index') }}" class="bg-violet-500 hover:bg-violet-600 text-white font-bold py-4 px-6 rounded text-center">
+                        Manage Employees
                     </a>
                 </div>
 
                 <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="{{ route('expenses.index') }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded text-center">
+                        Manage Expenses
+                    </a>
                     <a href="{{ route('orders.index') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded text-center">
                         View Orders
                     </a>

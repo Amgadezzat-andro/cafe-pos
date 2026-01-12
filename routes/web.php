@@ -10,6 +10,7 @@ use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -143,6 +144,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('expenses', ExpenseController::class);
     Route::get('/expenses/reports/daily', [ExpenseController::class, 'dailyReport'])->name('expenses.daily-report');
     Route::get('/expenses/reports/monthly', [ExpenseController::class, 'monthlyReport'])->name('expenses.monthly-report');
+
+    // Employees management routes
+    Route::resource('employees', EmployeeController::class);
 
     // Order management and reports
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
