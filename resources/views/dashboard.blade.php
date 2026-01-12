@@ -100,13 +100,35 @@
                     </div>
                 </div>
 
+                <!-- Inventory Section -->
+                <div class="mt-6">
+                    <h3 class="text-2xl font-bold mb-4">Inventory Overview</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Total Products Tracked</p>
+                            <p class="text-3xl font-bold text-indigo-600">{{ $totalProductsTracked ?? 0 }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Low Stock Alerts</p>
+                            <p class="text-3xl font-bold text-orange-600">{{ $lowStockCount ?? 0 }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Products Needing Reorder</p>
+                            <p class="text-3xl font-bold text-red-600">{{ $needsReorderCount ?? 0 }}</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Quick Links -->
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-5 gap-4">
                     <a href="{{ route('categories.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded text-center">
                         Manage Categories
                     </a>
                     <a href="{{ route('products.index') }}" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-6 rounded text-center">
                         Manage Products
+                    </a>
+                    <a href="{{ route('inventory.index') }}" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-4 px-6 rounded text-center">
+                        Manage Inventory
                     </a>
                     <a href="{{ route('orders.index') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded text-center">
                         View Orders

@@ -46,7 +46,20 @@ Route::get('/dashboard', function () {
             ->groupBy('payment_method')
             ->get();
         
-        return view('dashboard', compact('todayOrders', 'todayRevenue', 'monthOrders', 'monthRevenue', 'topProducts', 'paymentMethodReport'));
+        // Inventory statistics
+        $totalProductsTracked = \App\Models\Inventory::count();
+        $lowStockCount = \App\Models\Inventory::get()
+            ->filter(function($inventory) {
+                return $inventory->isLowStock();
+            })
+            ->count();
+        $needsReorderCount = \App\Models\Inventory::get()
+            ->filter(function($inventory) {
+                return $inventory->needsReorder();
+            })
+            ->count();
+        
+        return view('dashboard', compact('todayOrders', 'todayRevenue', 'monthOrders', 'monthRevenue', 'topProducts', 'paymentMethodReport', 'totalProductsTracked', 'lowStockCount', 'needsReorderCount'));
     }
     
     if ($user && $user->hasRole('cashier')) {
