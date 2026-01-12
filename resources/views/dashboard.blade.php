@@ -120,7 +120,7 @@
                 </div>
 
                 <!-- Quick Links -->
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-6 gap-4">
                     <a href="{{ route('categories.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded text-center">
                         Manage Categories
                     </a>
@@ -129,6 +129,9 @@
                     </a>
                     <a href="{{ route('inventory.index') }}" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-4 px-6 rounded text-center">
                         Manage Inventory
+                    </a>
+                    <a href="{{ route('suppliers.index') }}" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-6 rounded text-center">
+                        Manage Suppliers
                     </a>
                     <a href="{{ route('orders.index') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded text-center">
                         View Orders

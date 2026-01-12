@@ -49,6 +49,16 @@
             </div>
         </a>
 
+        <!-- Suppliers -->
+        <a href="{{ route('suppliers.index') }}" class="block px-4 py-2 rounded-lg transition @if(request()->routeIs('suppliers.*')) bg-blue-600 @else hover:bg-gray-800 @endif">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 8.048M12 4.354L8.646 7.707a4 4 0 116.708 0L12 4.354M12 20H8m4 0h4m0 0v-4m0 4v4"></path>
+                </svg>
+                <span>Suppliers</span>
+            </div>
+        </a>
+
         <!-- Divider -->
         <div class="my-2 border-t border-gray-700"></div>
 
