@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -89,6 +90,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Chat routes for all authenticated users
+    // Important: Specific routes MUST come before parameterized routes!
+    Route::get('/chat/unread-count', [ChatController::class, 'unreadCount'])->name('chat.unread-count');
+    Route::get('/chat/unread-by-partner', [ChatController::class, 'unreadByPartner'])->name('chat.unread-by-partner');
+    Route::get('/chat/partners', [ChatController::class, 'partners'])->name('chat.partners');
+    Route::get('/chat/{user}', [ChatController::class, 'index'])->name('chat.index');
+    Route::post('/chat/{user}', [ChatController::class, 'store'])->name('chat.store');
 });
 
 // Admin routes - only accessible by admin role
