@@ -9,6 +9,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ExpenseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -137,6 +138,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Purchases management routes
     Route::resource('purchases', PurchaseController::class);
+
+    // Expenses management routes
+    Route::resource('expenses', ExpenseController::class);
+    Route::get('/expenses/reports/daily', [ExpenseController::class, 'dailyReport'])->name('expenses.daily-report');
+    Route::get('/expenses/reports/monthly', [ExpenseController::class, 'monthlyReport'])->name('expenses.monthly-report');
 
     // Order management and reports
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

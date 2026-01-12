@@ -119,6 +119,25 @@
                     </div>
                 </div>
 
+                <!-- Expenses Section -->
+                <div class="mt-6">
+                    <h3 class="text-2xl font-bold mb-4">Expenses Overview</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">Today's Expenses</p>
+                            <p class="text-3xl font-bold text-red-600">${{ number_format(\App\Models\Expense::todayTotal(), 2) }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">This Month</p>
+                            <p class="text-3xl font-bold text-orange-600">${{ number_format(\App\Models\Expense::monthTotal(), 2) }}</p>
+                        </div>
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <p class="text-sm text-gray-600">This Year</p>
+                            <p class="text-3xl font-bold text-yellow-600">${{ number_format(\App\Models\Expense::yearTotal(), 2) }}</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Quick Links -->
                 <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <a href="{{ route('categories.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded text-center">
@@ -139,13 +158,16 @@
                     <a href="{{ route('purchases.index') }}" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-6 rounded text-center">
                         Record Purchases
                     </a>
-                    <a href="{{ route('orders.index') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded text-center">
-                        View Orders
+                    <a href="{{ route('expenses.index') }}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-4 px-6 rounded text-center">
+                        Manage Expenses
                     </a>
                 </div>
 
-                <div class="mt-4">
-                    <a href="{{ route('orders.reports') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded text-center block">
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="{{ route('orders.index') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded text-center">
+                        View Orders
+                    </a>
+                    <a href="{{ route('orders.reports') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded text-center">
                         Financial Reports
                     </a>
                 </div>
