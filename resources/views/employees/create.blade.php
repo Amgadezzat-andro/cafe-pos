@@ -46,7 +46,7 @@
                 </div>
 
                 <!-- System Role -->
-                <div class="mb-8">
+                <div class="mb-6">
                     <label for="system_role" class="block text-sm font-semibold text-gray-700 mb-2">System Role *</label>
                     <select id="system_role" name="system_role" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('system_role') border-red-500 @enderror">
                         <option value="">-- Select System Role --</option>
@@ -61,6 +61,39 @@
                     @enderror
                 </div>
 
+                <!-- Create Account Section -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+                    <div class="flex items-center mb-4">
+                        <input type="checkbox" id="create_account" name="create_account" value="1" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 border-gray-300" onchange="toggleAccountFields()">
+                        <label for="create_account" class="ml-2 block text-sm font-semibold text-gray-700">Create System Account</label>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-4">Enable this employee to log in and access the POS system</p>
+
+                    <!-- Email (hidden by default) -->
+                    <div class="mb-4" id="email_field" style="display: none;">
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
+                        @error('email')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Password (hidden by default) -->
+                    <div class="mb-4" id="password_field" style="display: none;">
+                        <label for="password" class="block text-sm font-semibold text-gray-700 mb-2">Password *</label>
+                        <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('password') border-red-500 @enderror">
+                        @error('password')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Confirm Password (hidden by default) -->
+                    <div id="password_confirm_field" style="display: none;">
+                        <label for="password_confirmation" class="block text-sm font-semibold text-gray-700 mb-2">Confirm Password *</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
                 <!-- Buttons -->
                 <div class="flex space-x-4">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded">
@@ -73,4 +106,23 @@
             </form>
         </div>
     </div>
+
+    <script>
+        function toggleAccountFields() {
+            const checkbox = document.getElementById('create_account');
+            const emailField = document.getElementById('email_field');
+            const passwordField = document.getElementById('password_field');
+            const passwordConfirmField = document.getElementById('password_confirm_field');
+            
+            if (checkbox.checked) {
+                emailField.style.display = 'block';
+                passwordField.style.display = 'block';
+                passwordConfirmField.style.display = 'block';
+            } else {
+                emailField.style.display = 'none';
+                passwordField.style.display = 'none';
+                passwordConfirmField.style.display = 'none';
+            }
+        }
+    </script>
 </x-app-layout>

@@ -147,6 +147,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Employees management routes
     Route::resource('employees', EmployeeController::class);
+    Route::post('/employees/{employee}/create-account', [EmployeeController::class, 'createAccount'])->name('employees.create-account');
 
     // Order management and reports
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

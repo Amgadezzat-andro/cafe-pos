@@ -40,6 +40,7 @@
                         <th class="px-6 py-3 text-left text-sm font-semibold">Position</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">System Role</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">Salary</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold">Account Status</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">Hire Date</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold">Actions</th>
                     </tr>
@@ -55,6 +56,17 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4">${{ number_format($employee->salary, 2) }}</td>
+                            <td class="px-6 py-4">
+                                @if ($employee->user)
+                                    <span class="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
+                                        ✓ Active
+                                    </span>
+                                @else
+                                    <span class="px-3 py-1 rounded-full text-sm font-semibold bg-gray-100 text-gray-800">
+                                        No Account
+                                    </span>
+                                @endif
+                            </td>
                             <td class="px-6 py-4">{{ $employee->hire_date->format('M d, Y') }}</td>
                             <td class="px-6 py-4 space-x-2">
                                 <a href="{{ route('employees.show', $employee) }}" class="text-blue-500 hover:text-blue-700 text-sm font-semibold">View</a>
@@ -68,7 +80,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-8 text-center text-gray-500">No employees found. <a href="{{ route('employees.create') }}" class="text-blue-500 hover:text-blue-700">Create one</a></td>
+                            <td colspan="7" class="px-6 py-8 text-center text-gray-500">No employees found. <a href="{{ route('employees.create') }}" class="text-blue-500 hover:text-blue-700">Create one</a></td>
                         </tr>
                     @endforelse
                 </tbody>
