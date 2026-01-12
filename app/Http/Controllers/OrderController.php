@@ -130,6 +130,9 @@ class OrderController extends Controller
                 ->with('error', 'This order is already cancelled.');
         }
 
+        // Restore inventory for cancelled order
+        $order->restoreInventory();
+
         $order->update([
             'status' => 'cancelled',
             'cancelled_at' => now(),
@@ -154,6 +157,9 @@ class OrderController extends Controller
         }
 
         $refundAmount = $order->total - $order->refunded_amount;
+
+        // Restore inventory for refunded order
+        $order->restoreInventory();
 
         $order->update([
             'status' => 'cancelled',

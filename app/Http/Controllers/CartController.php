@@ -174,6 +174,9 @@ class CartController extends Controller
             ]);
         }
 
+        // Reduce inventory for completed order
+        $order->reduceInventory();
+
         // Clear cart
         session()->forget('cart');
 

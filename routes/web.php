@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -107,6 +108,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Product CRUD routes
     Route::resource('products', ProductController::class);
+
+    // Inventory management routes
+    Route::resource('inventory', InventoryController::class);
+    Route::get('/inventory/low-stock', [InventoryController::class, 'lowStock'])->name('inventory.low-stock');
+    Route::get('/inventory/needs-reorder', [InventoryController::class, 'needsReorder'])->name('inventory.needs-reorder');
+    Route::post('/inventory/{inventory}/increase-stock', [InventoryController::class, 'increaseStock'])->name('inventory.increase-stock');
+    Route::post('/inventory/{inventory}/decrease-stock', [InventoryController::class, 'decreaseStock'])->name('inventory.decrease-stock');
+    Route::post('/inventory/{inventory}/adjust-stock', [InventoryController::class, 'adjustStock'])->name('inventory.adjust-stock');
 
     // Order management and reports
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

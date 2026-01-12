@@ -55,4 +55,30 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    /**
+     * Reduce inventory stock for completed order.
+     */
+    public function reduceInventory(): void
+    {
+        foreach ($this->items as $item) {
+            $inventory = Inventory::where('product_id', $item->product_id)->first();
+            if ($inventory) {
+                $inventory->decreaseStock($item->quantity);
+            }
+        }
+    }
+
+    /**
+     * Restore inventory stock for cancelled order.
+     */
+    public function restoreInventory(): void
+    {
+        foreach ($this->items as $item) {
+            $inventory = Inventory::where('product_id', $item->product_id)->first();
+            if ($inventory) {
+                $inventory->increaseStock($item->quantity);
+            }
+        }
+    }
 }
