@@ -59,6 +59,16 @@
             </div>
         </a>
 
+        <!-- Purchases -->
+        <a href="{{ route('purchases.index') }}" class="block px-4 py-2 rounded-lg transition @if(request()->routeIs('purchases.*')) bg-blue-600 @else hover:bg-gray-800 @endif">
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+                <span>Purchases</span>
+            </div>
+        </a>
+
         <!-- Divider -->
         <div class="my-2 border-t border-gray-700"></div>
 

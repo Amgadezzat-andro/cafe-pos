@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -133,6 +134,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Suppliers management routes
     Route::resource('suppliers', SupplierController::class);
+
+    // Purchases management routes
+    Route::resource('purchases', PurchaseController::class);
 
     // Order management and reports
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

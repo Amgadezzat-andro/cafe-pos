@@ -120,7 +120,7 @@
                 </div>
 
                 <!-- Quick Links -->
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-6 gap-4">
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <a href="{{ route('categories.index') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded text-center">
                         Manage Categories
                     </a>
@@ -130,13 +130,22 @@
                     <a href="{{ route('inventory.index') }}" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-4 px-6 rounded text-center">
                         Manage Inventory
                     </a>
+                </div>
+
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
                     <a href="{{ route('suppliers.index') }}" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-4 px-6 rounded text-center">
                         Manage Suppliers
+                    </a>
+                    <a href="{{ route('purchases.index') }}" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-6 rounded text-center">
+                        Record Purchases
                     </a>
                     <a href="{{ route('orders.index') }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded text-center">
                         View Orders
                     </a>
-                    <a href="{{ route('orders.reports') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded text-center">
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ route('orders.reports') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded text-center block">
                         Financial Reports
                     </a>
                 </div>
