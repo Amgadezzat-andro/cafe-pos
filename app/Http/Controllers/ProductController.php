@@ -30,6 +30,7 @@ class ProductController extends Controller
 
     /**
      * Store a newly created product in storage.
+     * test
      */
     public function store(StoreProductRequest $request): RedirectResponse
     {
